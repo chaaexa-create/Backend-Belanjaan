@@ -23,8 +23,8 @@ WORKDIR /var/www/html
 # 4. Salin file composer terlebih dahulu agar proses caching layer Docker cepat
 COPY composer.json composer.lock /var/www/html/
 
-# 5. Jalankan composer install tanpa skrip autoloader dulu (opsional untuk optimasi)
-RUN composer install --no-directory --no-scripts --no-autoloader --prefer-dist
+# BENAR
+RUN composer install --no-interaction --no-scripts --no-autoloader --prefer-dist
 
 # 6. Copy seluruh sisa file project ke direktori web root
 COPY . /var/www/html
