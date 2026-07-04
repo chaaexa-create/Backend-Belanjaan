@@ -2,6 +2,12 @@ FROM php:8.3-apache
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    && docker-php-ext-install pdo_mysql pdo_pgsql zip
+
 RUN docker-php-ext-install pdo_mysql pdo_pgsql zip
 
 RUN a2enmod rewrite
