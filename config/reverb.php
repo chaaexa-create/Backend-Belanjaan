@@ -29,10 +29,10 @@ return [
     'servers' => [
 
         'reverb' => [
-            'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
-            'port' => env('REVERB_SERVER_PORT', 8080),
+            'host' => '127.0.0.1', // Diubah dari '0.0.0.0'
+            'port' => 8000,        // Diubah dari 8080
             'path' => env('REVERB_SERVER_PATH', ''),
-            'hostname' => env('REVERB_HOST'),
+            'hostname' => 'backend-belanjaan-production.up.railway.app', // Isi dengan domain asli Railway kamu
             'options' => [
                 'tls' => [],
             ],

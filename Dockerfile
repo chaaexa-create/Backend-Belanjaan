@@ -1,6 +1,6 @@
 FROM php:8.3-fpm-alpine
 
-# 1. Install ekstensi database & zip via alpine package manager
+# 1. Install dependensi (termasuk supervisor untuk manage proses)
 RUN apk add --no-cache \
     libpq-dev \
     libzip-dev \
@@ -11,32 +11,32 @@ RUN apk add --no-cache \
 
 RUN docker-php-ext-install pdo_mysql pdo_pgsql zip
 
-# 2. Ambil binary Composer resmi dari image composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 3. Atur konfigurasi Nginx
+# 2. Atur konfigurasi Nginx
 RUN mkdir -p /run/nginx
 COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
+# 3. Buat file konfigurasi Supervisor untuk manage 3 proses
+RUN printf "[supervisord]\nnodaemon=true\nuser=root\nlogfile=/var/log/supervisord.log\npidfile=/var/run/supervisord.pid\n\n[program:php-fpm]\ncommand=php-fpm -F\nstdout_logfile=/dev/stdout\nstderr_logfile=/dev/stderr\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nstdout_logfile=/dev/stdout\nstderr_logfile=/dev/stderr\n\n[program:reverb]\ncommand=php artisan reverb:start --port=8000\nstdout_logfile=/dev/stdout\nstderr_logfile=/dev/stderr\n" > /etc/supervisord.conf
+
 WORKDIR /var/www/html
 
-# 4. Salin file composer terlebih dahulu agar proses caching layer Docker cepat
+# 4. Copy file composer dkk
 COPY composer.json composer.lock /var/www/html/
 
-# BENAR
 RUN composer install --no-interaction --no-scripts --no-autoloader --prefer-dist
 
-# 6. Copy seluruh sisa file project ke direktori web root
+# 5. Copy seluruh sisa file project
 COPY . /var/www/html
 
-# 7. Dump autoloader ulang agar membaca file yang baru disalin okee
 RUN composer dump-autoload --optimize
 
-# 8. Atur permission folder storage & cache Laravel
+# 6. Atur permission folder storage & cache Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 8080
 
-# CMD php-fpm -D && sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && nginx -g "daemon off;"
-CMD php-fpm -D && php artisan reverb:start --port=8000 & sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && nginx -g "daemon off;"
+# 7. Jalankan Supervisor (untuk start PHP-FPM, Nginx, Reverb sekaligus)
+CMD sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && /usr/bin/supervisord -c /etc/supervisord.conf
