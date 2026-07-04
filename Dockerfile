@@ -29,7 +29,7 @@ RUN composer install --no-directory --no-scripts --no-autoloader --prefer-dist
 # 6. Copy seluruh sisa file project ke direktori web root
 COPY . /var/www/html
 
-# 7. Dump autoloader ulang agar membaca file yang baru disalin
+# 7. Dump autoloader ulang agar membaca file yang baru disalin okee
 RUN composer dump-autoload --optimize
 
 # 8. Atur permission folder storage & cache Laravel
