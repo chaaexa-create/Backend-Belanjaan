@@ -38,4 +38,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 EXPOSE 8080
 
-CMD php-fpm -D && sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && nginx -g "daemon off;"
+# CMD php-fpm -D && sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && nginx -g "daemon off;"
+CMD php-fpm -D && php artisan reverb:start --port=8000 & sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf && nginx -g "daemon off;"
