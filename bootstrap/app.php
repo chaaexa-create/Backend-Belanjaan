@@ -13,17 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
-    // ->withMiddleware(function (Middleware $middleware): void {
-    //     //
-    // })
-
-    ->withMiddleware(function (Middleware $middleware) {
-        // Gunakan ini (abaikan jika di VS Code tercoret, yang penting aplikasimu tidak crash)
-        $middleware->validateCsrfTokens(except: [
-            'api/*',
-        ]);
-
-        $middleware->statefulApi();
+    
+    ->withMiddleware(function (Middleware $middleware): void {
+        //
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
