@@ -32,7 +32,7 @@ return [
             'host' => '127.0.0.1', // Diubah dari '0.0.0.0'
             'port' => 8000,        // Diubah dari 8080
             'path' => env('REVERB_SERVER_PATH', ''),
-            'hostname' => 'backend-belanjaan-production.up.railway.app', // Isi dengan domain asli Railway kamu
+            'hostname' => env('REVERB_HOST', '127.0.0.1'),
             'options' => [
                 'tls' => [],
             ],
@@ -78,11 +78,11 @@ return [
                 'app_id' => env('REVERB_APP_ID'),
                 'options' => [
                     'host' => env('REVERB_HOST'),
-                    'port' => env('REVERB_PORT', 443),
-                    'scheme' => env('REVERB_SCHEME', 'https'),
+                    'port' => env('REVERB_PORT', 8080),
+                    'scheme' => env('REVERB_SCHEME', 'http'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
                 ],
-                'allowed_origins' => ['frontend-belanjaan-vercel.app', 'backend-belanjaan-production.up.railway.app'],
+                'allowed_origins' => ['*'],
                 'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),
                 'activity_timeout' => env('REVERB_APP_ACTIVITY_TIMEOUT', 30),
                 'max_connections' => env('REVERB_APP_MAX_CONNECTIONS'),
