@@ -8,10 +8,10 @@ php artisan migrate --force
 
 # Substitute PORT from Railway into nginx config
 PORT="${PORT:-8080}"
-sed "s/\${PORT}/$PORT/g" nginx.conf > /tmp/nginx.conf
+sed "s/8000/$PORT/g" nginx.conf > /tmp/nginx.conf
 
-# Start Laravel dev server
-php artisan serve --host=127.0.0.1 --port=8000 &
+# Start Laravel dev server (internal, Nginx proxies to this)
+php artisan serve --host=127.0.0.1 --port=8001 &
 
 # Start Reverb WebSocket server
 php artisan reverb:start --host=127.0.0.1 --port=8080 &
