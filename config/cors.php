@@ -20,9 +20,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://frontend-belanjaan.vercel.app',
+        'https://frontend-belanjaan-vercel.app',
         'http://localhost:5173',
-        'http://localhost:5174',
     ],
 
     'allowed_origins_patterns' => [],
@@ -33,6 +32,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
