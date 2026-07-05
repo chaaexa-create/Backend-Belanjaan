@@ -33,7 +33,7 @@ class BarangController extends Controller
 
         $barang = Barang::create($validated);
 
-        BarangEvent::dispatch($barang, 'CREATED');
+        try { BarangEvent::dispatch($barang, 'CREATED'); } catch (\Throwable) {}
 
         return response()->json([
             'success' => true,
@@ -46,11 +46,12 @@ class BarangController extends Controller
     {
         $validated = $request->validate([
             'nama_barang' => 'sometimes|string|max:255',
+            'harga_final' => 'nullable|numeric|min:0',
         ]);
 
         $barang->update($validated);
 
-        BarangEvent::dispatch($barang->fresh(), 'UPDATED');
+        try { BarangEvent::dispatch($barang->fresh(), 'UPDATED'); } catch (\Throwable) {}
 
         return response()->json([
             'success' => true,
@@ -70,7 +71,7 @@ class BarangController extends Controller
         $barang->harga_final = $validated['is_dibeli'] ? $validated['harga_final'] : null;
         $barang->save();
 
-        BarangEvent::dispatch($barang->fresh(), 'UPDATED');
+        try { BarangEvent::dispatch($barang->fresh(), 'UPDATED'); } catch (\Throwable) {}
 
         return response()->json([
             'success' => true,
@@ -83,7 +84,7 @@ class BarangController extends Controller
     {
         $barang->delete();
 
-        BarangEvent::dispatch($barang, 'DELETED');
+        try { BarangEvent::dispatch($barang, 'DELETED'); } catch (\Throwable) {}
 
         return response()->json([
             'success' => true,
