@@ -5,7 +5,7 @@
 - **Laravel 13** (PHP 8.3) with Tailwind CSS 4 + Vite 8.
 - Real-time broadcasting via **Laravel Reverb** (local: `BROADCAST_CONNECTION=reverb`, port 8080).
 - `bootstrap/app.php` configures both `web` and `api` routes, CSRF exclusion for `api/*`, JSON rendering for `api/*`, and `statefulApi()` (Sanctum).
-- **No frontend yet** — only `resources/js/app.js` + `resources/css/app.css` skeleton.
+- **Frontend is separate** — React SPA lives in `../frontend/` (not a Laravel Inertia/Blade app). The `resources/` dir is only a skeleton.
 - **No auth endpoints** yet — Sanctum is installed but not wired to any login/register routes.
 
 ## Commands
